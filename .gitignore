@@ -2,12 +2,14 @@
 .gtm
 .vagrant
 .cache
+.vscode
 
-/docs/doxygen/
 /bin/
-/build/
+/build*/
+/.build/
 /cmake-build-debug/
 /cmake-build-release/
+/CMakeFiles/
 /site/
 
 __pycache__
@@ -19,8 +21,10 @@ __pycache__
 *.sln
 *.csproj
 *.speccache
-*.iml
+*.DS_Store
 
 perf.data*
-log.db
+logsystem.db
 /TODO.md
+
+*.srctrl*

@@ -1,0 +1,24 @@
+"0x68373d25a0b84f58":
+  asset_name: "core/cube"
+  asset_type: "entity"
+  components:
+    transform:
+      position: [0, 0, 0]
+      rotation: [0, 0, 0]
+      scale: [1, 1, 1]
+
+    mesh_renderer:
+      scene: "core/cube"
+      node: "n_cube"
+      mesh: "g_cube"
+      material: "core/cube"
+
+"0x8b73c8d507e579eb":
+  asset_name: "core/cube"
+  asset_type: "material"
+  PREFAB: content/material1.material
+  layers:
+    default:
+      variables:
+        kdasdvxcvcxbxcbxbg435124asdkj:
+          value: content/scene/solider/body01

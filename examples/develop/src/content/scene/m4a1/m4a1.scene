@@ -1,6 +1,0 @@
-import:
-    input: content/scene/m4a1/M4A1.fbx
-#    input: content/scene/duck/duck.dae
-
-    postprocess:
-      flip_uvs: true

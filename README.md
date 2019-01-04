@@ -3,39 +3,32 @@
 [![build status](https://gitlab.com/cyberegoorg/cetech/badges/master/build.svg)](https://gitlab.com/cyberegoorg/cetech/commits/master)
 [![License](https://img.shields.io/badge/license-CC0-blue.svg)](LICENSE.md)
 
-![Prototyp](docs/img/prototyp.png)
-
 ## [What is it?](https://cyberegoorg.gitlab.io/cetech/)
 
-CETech is Data-Driven game engine and toolbox inspired by [Bitsquid](http://bitsquid.blogspot.se/)/[Stingray](http://stingrayengine.com/) engine.
+CETech is game engine primary develop for internal use in CyberEg{o.o}rg.
 
-* [Release notes](http://cyberegoorg.gitlab.io/cetech/about/release-notes) (not released)
-* [Documentation](http://cyberegoorg.gitlab.io/cetech) (work in progress)
+## [Documentation](http://cyberegoorg.gitlab.io/cetech) (work in progress)
 
-## Suported platforms
+## Platforms
 
-* Linux (Runtime + Playground) - Work in progress
-
-## Planned platforms
-* Windows (Runtime + Playground)
-* OSX (Runtime + Playground)
-* FreeBSD (Runtime + Playground)
-* RaspberryPi (Runtime + Playground)
-* asm.js/Emscripten (Runtime)
-* Android (Runtime)
-* XBox One (Runtime)
-* PS4 (Runtime)
+* [ ] OSX - **Work in progress**
+* [ ] Linux - **Work in progress**
+* [ ] Windows
+* [ ] FreeBSD
+* [ ] RaspberryPi
+* [ ] PS4
+* [ ] XBox One
+* [ ] Android
+* [ ] asm.js/Emscripten
 
 ## Similar projects
 
 * [crown](https://github.com/taylor001/crown) -  Lightweight and flexible cross-platform game engine. 
 * [lumix](https://github.com/nem0/LumixEngine) - Easy to use, fast and flexible 3D game engine.
 
-## [3rd party libraries and tools](https://cyberegoorg.gitlab.io/cetech/about/3rdparty/)
+## [3rd party libraries and tools](https://cyberegoorg.gitlab.io/cetech/index.html#3rdparty)
 
-## Build
-
-* [Linux](https://cyberegoorg.gitlab.io/cetech/engine/build#linux)
+## [Build](https://cyberegoorg.gitlab.io/cetech/index.html#Build)
 
 ## [License](http://creativecommons.org/publicdomain/zero/1.0/)
 

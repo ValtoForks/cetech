@@ -1,0 +1,18 @@
+core:
+  boot_pkg: content/boot
+
+screen:
+  x: 800
+  y: 600
+
+#load_module.1: module_property_inspector
+#load_module.2: module_asset_browser
+#load_module.3: module_asset_property
+#load_module.4: module_asset_preview
+#load_module.5: module_texture_property
+#load_module.6: module_level_inspector
+#load_module.7: module_entity_property
+#load_module.8: module_transform_property
+#load_module.9: module_level_view
+#load_module.0: module_example
+load_module.0: game_example_develop

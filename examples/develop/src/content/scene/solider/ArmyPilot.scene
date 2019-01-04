@@ -1,5 +1,0 @@
-import:
-    input: content/scene/solider/ArmyPilot.dae
-
-    postprocess:
-      flip_uvs: true

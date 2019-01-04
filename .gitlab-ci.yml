@@ -1,37 +1,57 @@
-########
-# Core #
-###############################################################################
-variables:
-  GIT_SUBMODULE_STRATEGY: recursive
-
 ##########
 # Stages #
 ###############################################################################
 stages:
+  - docker_image
   - build
   - test
-  - doc
+  - documentation
 
-########
+################
+# Docker image #
+###############################################################################
+docker_image:
+  stage: docker_image
+  image: docker:latest
+
+  only:
+    -  toolchain
+
+  except:
+    - branches
+
+  services:
+    - docker:dind
+
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE/toolchain:master toolchain/
+    - docker push $CI_REGISTRY_IMAGE/toolchain:master
+
+#########
 # Build #
 ###############################################################################
 build:
-  image: $CI_REGISTRY/cyberegoorg/cetech-docker-toolchain:master
+  image: $CI_REGISTRY/cyberegoorg/cetech/toolchain:master
   stage: build
+
+  variables:
+    GIT_SUBMODULE_STRATEGY: normal
 
   artifacts:
     paths:
       - bin
 
   script:
-    - python3 scripts/build.py
-
+    - tools/linux64/genie --gcc=linux-clang gmake
+    - make -C .build/projects/gmake-linux-clang/ config=debug64
+    - make -C .build/projects/gmake-linux-clang/ config=release64
 
 ########
 # Test #
 ###############################################################################
-test:
-  image: $CI_REGISTRY/cyberegoorg/cetech-docker-toolchain:master
+test_release:
+  image: $CI_REGISTRY/cyberegoorg/cetech/toolchain:master
   stage: test
   variables:
     SDL_VIDEODRIVER: dummy
@@ -40,19 +60,33 @@ test:
     - build
 
   script:
-    - py.test -v --color=yes engine/test
+    - bin/linux64/cetech_develop -compile -src ./examples/develop/src -build ./examples/develop/build -renderer.type noop
 
-#################
-# Gitlab pages  #
+test_debug:
+  image: $CI_REGISTRY/cyberegoorg/cetech/toolchain:master
+  stage: test
+  variables:
+    SDL_VIDEODRIVER: dummy
+
+  dependencies:
+    - build
+
+  script:
+    - bin/linux64/cetech_develop_debug -compile -src ./examples/develop/src -build ./examples/develop/build -renderer.type noop
+
+################
+# Gitlab pages #
 ###############################################################################
 pages:
-  image: $CI_REGISTRY/cyberegoorg/cetech-docker-toolchain:master
-  stage: doc
+  image: $CI_REGISTRY/cyberegoorg/cetech/toolchain:master
+  stage: documentation
   script:
-    - export LC_ALL=C.UTF-8
-    - export LANG=C.UTF-8
-#    - doxygen scripts/Doxyfile
-    - mkdocs build -f scripts/mkdocs.yml -d public
+    - tools/linux64/genie doc
+    - cp -R docs public
+    - cp docs/index.md.html public/index.html
+
+  dependencies:
+    - build
 
   only:
     - master

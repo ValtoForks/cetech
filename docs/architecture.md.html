@@ -1,0 +1,34 @@
+<meta charset="utf-8" emacsmode="-*- markdown -*-">
+                    **CETech architecture**
+
+# Resource
+
+********************************************************************
+*
+*                     +---------------------+
+*                     |      SourceDB       |
+*                     | +-----------------+ |
+*                     | |     Source      | |
+*                     | +-----------------+ |
+*                     |          ^          |
+*                     |          |          |
+*                     |          v          |
+*                     | +-----------------+ |
+*                     | |      Load       | |
+*                     | +-----------------+ |
+*                     +----------+----------+
+*                                |
+*                                |
+*                                v
+* +-----------------+   +-----------------+
+* |     BuildDB     |<--+     Compile     |
+* +-----------------+   +-----------------+
+*          |                     ^
+*          |                     |
+*          |                     v
+*          |            +-----------------+    +-----------------+
+*          +----------->|    Resource     |<-->|     Engine      |
+*                       +-----------------+    +-----------------+
+********************************************************************
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js"></script></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

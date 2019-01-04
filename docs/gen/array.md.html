@@ -1,0 +1,275 @@
+<meta charset="utf-8" emacsmode="-*- markdown -*-">
+
+                     **Dynamic growing array**
+# Description
+
+****************************************************
+*
+*  header              pointer  size  capacity
+*    |                   |       |       |
+*    v                   v       v       v
+*    +-----------------+---+---+---+---+---+
+*    | size | capacity | O | 1 | 2 |   |   |
+*    +-----------------+---+---+---+---+---+
+*
+*
+****************************************************
+
+!!! ERROR: Array must be set to NULL before first use[.](https://www.monkeyuser.com/2018/debugging/)
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   TYPE* array = NULL;
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Example
+
+## Classic int array
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+int* array = NULL;
+
+ce_array_push(array, 1, ce_memory_a0->system);
+ce_array_push(array, 2, ce_memory_a0->system);
+ce_array_push(array, 3, ce_memory_a0->system);
+ce_array_push(array, 4, ce_memory_a0->system);
+
+const uint32_t n = ce_array_size(array);
+for(uint32_t i = i; i < n; ++i) {
+    printf("%d\n", array[i]);
+}
+
+ce_array_free(array, ce_memory_a0->system);
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Array as char buffer
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+char* buffer = NULL;
+
+ce_array_push(buffer, 'h', ce_memory_a0->system);
+ce_array_push(buffer, 'e', ce_memory_a0->system);
+ce_array_push(buffer, 'l', ce_memory_a0->system);
+ce_array_push(buffer, 'l', ce_memory_a0->system);
+ce_array_push(buffer, 'o', ce_memory_a0->system);
+ce_array_push(buffer, '\0', ce_memory_a0->system);
+
+printf("%s\n", buffer);
+
+ce_array_free(buffer, ce_memory_a0->system);
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Array as string buffer
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+char* buffer = NULL;
+
+ce_array_push_n(buffer, "Hello", strlen("Hello"), ce_memory_a0->system);
+ce_array_push_n(buffer, ", ", strlen(", "), ce_memory_a0->system);
+ce_array_push_n(buffer, "world.", strlen("world."), ce_memory_a0->system);
+
+printf("%s\n", buffer); // hello, world.
+
+ce_array_free(buffer, ce_memory_a0->system);
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Struct memory "pool"
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+struct object {
+    uint64 id;
+}
+
+object* pool = NULL;
+
+static uint32_t _new_object(struct object obj) {
+    uint32_t idx = ce_array_size(pool);
+    ce_array_push(pool, obj, ce_memory_a0->system);
+    return idx;
+}
+
+uint32_t obj1 = _new_object((struct object){.id = 1}));
+uint32_t obj2 = _new_object((struct object){.id = 2}));
+uint32_t obj3 = _new_object((struct object){.id = 3}));
+
+printf("%d\n", pool[obj1].id); // 1
+printf("%d\n", pool[obj2].id); // 2
+printf("%d\n", pool[obj3].id); // 3
+
+ce_array_free(pool, ce_memory_a0->system);
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+# Struct
+
+
+## ce_array_header_t
+~~~~~~~~~~~~~~~~~~~~
+struct ce_array_header_t {
+    uint32_t size;
+    uint32_t capacity;
+};
+
+~~~~~~~~~~~~~~~~~~~~
+Array header (pointer preambule)
+
+# Macro
+
+
+## ce_array_free
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_free(a, alloc) 
+
+~~~~~~~~~~~~~~~~~~~~
+Free array.
+
+
+## ce_array_header
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_header(a) 
+
+~~~~~~~~~~~~~~~~~~~~
+Get array [header](#ce_array_header_t).
+
+
+## ce_array_size
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_size(a) 
+
+~~~~~~~~~~~~~~~~~~~~
+Get array size.
+
+
+## ce_array_capacity
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_capacity(a) 
+
+~~~~~~~~~~~~~~~~~~~~
+Get array capacity.
+
+
+## ce_array_clean
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_clean(a) 
+
+~~~~~~~~~~~~~~~~~~~~
+Clean array (only set size = 0)
+
+
+## ce_array_set_capacity
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_set_capacity(a, c, alloc) 
+
+~~~~~~~~~~~~~~~~~~~~
+Set array capacity
+
+
+## ce_array_resize
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_resize(a, c, alloc) 
+
+~~~~~~~~~~~~~~~~~~~~
+Resize array
+
+
+## ce_array_empty
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_empty(a) 
+
+~~~~~~~~~~~~~~~~~~~~
+Is array emty?
+
+
+## ce_array_any
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_any(a) 
+
+~~~~~~~~~~~~~~~~~~~~
+Has array any element?
+
+
+## ce_array_full
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_full(a) 
+
+~~~~~~~~~~~~~~~~~~~~
+Is array full?
+
+
+## ce_array_full_n
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_full_n(a, n) 
+
+~~~~~~~~~~~~~~~~~~~~
+Is array full for n elemenets?
+
+
+## ce_array_push
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_push(a, item, alloc) 
+
+~~~~~~~~~~~~~~~~~~~~
+Push value to array
+
+
+## ce_array_push_n
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_push_n(a, items, n, alloc) 
+
+~~~~~~~~~~~~~~~~~~~~
+Push n values from items to array
+
+
+## ce_array_pop_front
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_pop_front(a) 
+
+~~~~~~~~~~~~~~~~~~~~
+Pop element from front
+
+
+## ce_array_pop_back
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_pop_back(a) 
+
+~~~~~~~~~~~~~~~~~~~~
+Pop element from back
+
+
+## ce_array_insert
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_insert(a, idx, v, alloc) 
+
+~~~~~~~~~~~~~~~~~~~~
+Insert element before element at *idx*
+
+
+## ce_array_front
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_front(a) 
+
+~~~~~~~~~~~~~~~~~~~~
+Get front element
+
+
+## ce_array_back
+~~~~~~~~~~~~~~~~~~~~
+#define ce_array_back(a) 
+
+~~~~~~~~~~~~~~~~~~~~
+Get back element
+
+# Function
+
+
+## ce_array_grow
+~~~~~~~~~~~~~~~~~~~~
+static inline void *ce_array_grow(void *array,
+                                  uint32_t capacity,
+                                  size_t type_size,
+                                  size_t type_align,
+                                  const struct ce_alloc *alloc,
+                                  const char *filename,
+                                  uint32_t line) {
+
+~~~~~~~~~~~~~~~~~~~~
+Grow array if need.
+
+<!-- Markdeep: -->
+<style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style>
+<script src="../markdeep.min.js"></script>
+<script>window.alreadyProcessedMarkdeep|| (document.body.style.visibility="visible");</script>
